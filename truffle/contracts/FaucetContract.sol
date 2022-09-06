@@ -4,6 +4,9 @@ pragma solidity >=0.4.22 <0.9.0;
 contract Faucet{
    address[] public funders;
 
+   //private -> can be accesible only within the smart contract
+   // internal -> can be accesible only within the smart contract and also derived contracts
+
    receive() external payable {} //receive ether
 
    function addFunds() external payable {
