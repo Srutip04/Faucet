@@ -35,7 +35,7 @@ function App() {
               }}
             >
               Enable Ethereum
-            </button>
+                </button>
             <button className="btn mr-2">Donate</button>
             <button className="btn">Withdraw</button>
           </div>
