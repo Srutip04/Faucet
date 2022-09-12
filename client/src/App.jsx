@@ -15,7 +15,7 @@ function App() {
    const [account, setAccount] = useState(null);
    const [shouldReload, reload] = useState(false);
 
-    const reloadEffect = () => reload(!shouldReload);
+  const reloadEffect = useCallback(() => reload(!shouldReload), [shouldReload]);
 
   useEffect(() => {
     const web3Provider = async () => {
@@ -64,41 +64,52 @@ function App() {
       value: web3.utils.toWei("1", "ether")
     })
      reloadEffect();
-  },[web3Api, account])
+  },[web3Api, account,reloadEffect])
+
+  const withdraw = async () => {
+    const { contract, web3 } = web3Api;
+    const withdrawAmount = web3.utils.toWei("0.1", "ether");
+    await contract.withdraw(withdrawAmount, {
+      from: account,
+    });
+    reloadEffect();
+  };
 
 
 
   return (
-    
-      <>
-        <div className="faucet-wrapper">
-          <div className="faucet">
-            <div className="is-flex is-align-items-center">
-              <span>
-                <strong className="mr-2">Account: </strong>
-              </span>
-              {account ? (
-                <div>{account}</div>
-              ) : (
-                <button
-                  className="button is-small"
-                  onClick={() =>
-                    web3Api.provider.request({ method: "eth_requestAccounts" })
-                  }
-                >
-                  Connect Wallet
-                </button>
-              )}
-            </div>
-            <div className="balance-view is-size-2 my-4">
-              Current Balance: <strong>{balance}</strong> ETH
-            </div>
-            <button onClick={addFunds} className="button is-link mr-2">Donate 1ETH</button>
-            <button className="button is-primary">Withdraw</button>
+    <>
+      <div className="faucet-wrapper">
+        <div className="faucet">
+          <div className="is-flex is-align-items-center">
+            <span>
+              <strong className="mr-2">Account: </strong>
+            </span>
+            {account ? (
+              <div>{account}</div>
+            ) : (
+              <button
+                className="button is-small"
+                onClick={() =>
+                  web3Api.provider.request({ method: "eth_requestAccounts" })
+                }
+              >
+                Connect Wallet
+              </button>
+            )}
           </div>
+          <div className="balance-view is-size-2 my-4">
+            Current Balance: <strong>{balance}</strong> ETH
+          </div>
+          <button onClick={addFunds} className="button is-link mr-2">
+            Donate 1ETH
+          </button>
+          <button onClick={withdraw} className="button is-primary">
+            Withdraw
+          </button>
         </div>
-      </>
-   
+      </div>
+    </>
   );
 }
 
