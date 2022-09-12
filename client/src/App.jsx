@@ -21,7 +21,7 @@ function App() {
   
   const setAccountListener = (provider) => {
     provider.on("accountsChanged", (_) => window.location.reload());
-
+    provider.on("chainChanged", (_) => window.location.reload());
   };
 
   useEffect(() => {
@@ -137,14 +137,14 @@ function App() {
             onClick={addFunds}
             className="button is-link mr-2"
           >
-            Donate 1ETH
+            Donate 1 ETH
           </button>
           <button
             disabled={!canConnectToContract}
             onClick={withdraw}
             className="button is-primary"
           >
-            Withdraw
+            Withdraw 0.1 ETH
           </button>
         </div>
       </div>
