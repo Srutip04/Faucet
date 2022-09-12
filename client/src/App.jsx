@@ -13,6 +13,9 @@ function App() {
   });
    const [balance, setBalance] = useState(null);
    const [account, setAccount] = useState(null);
+   const [shouldReload, reload] = useState(false);
+
+    const reloadEffect = () => reload(!shouldReload);
 
   useEffect(() => {
     const web3Provider = async () => {
@@ -35,14 +38,14 @@ function App() {
     web3Provider();
   }, []);
 
-  useEffect(()=>{
-    const loadBalance = async () =>{
-      const {contract, web3} = web3Api;
+  useEffect(() => {
+    const loadBalance = async () => {
+      const { contract, web3 } = web3Api;
       const balance = await web3.eth.getBalance(contract.address);
       setBalance(web3.utils.fromWei(balance, "ether"));
-    }
+    };
     web3Api.contract && loadBalance();
-  },[web3Api])
+  }, [web3Api, shouldReload]);
  
   useEffect(()=>{
     const getAccount = async () =>{
@@ -60,6 +63,7 @@ function App() {
       from: account,
       value: web3.utils.toWei("1", "ether")
     })
+     reloadEffect();
   },[web3Api, account])
 
 
