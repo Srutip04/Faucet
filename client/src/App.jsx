@@ -1,4 +1,4 @@
-import { EthProvider } from "./contexts/EthContext";
+
 import "./App.css";
 import Web3 from "web3";
 import detectEthereumProvider from "@metamask/detect-provider";
@@ -17,7 +17,7 @@ function App() {
   useEffect(() => {
     const web3Provider = async () => {
       const  provider = await detectEthereumProvider();
-      const contract = await loadContract("Faucet");
+      const contract = await loadContract("Faucet",provider);
 
       if(provider){
          provider.request({ method: "eth_requestAccounts" });
@@ -46,7 +46,7 @@ function App() {
   },[web3Api.web3])
 
   return (
-    <EthProvider>
+    
       <>
         <div className="faucet-wrapper">
           <div className="faucet">
@@ -75,7 +75,7 @@ function App() {
           </div>
         </div>
       </>
-    </EthProvider>
+   
   );
 }
 
